@@ -26,6 +26,9 @@
 #include "cli.h"
 #include "os_key_override.h"
 
+// My keyboard setting: Add OS Detection
+#include "os_detection.h"
+
 const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {{
     {0xe0, 0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7},
     {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07},
@@ -113,6 +116,54 @@ static void push_deferred_key_record(uint16_t keycode, keyevent_t *event) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     bool cont = process_record_mouse(keycode, record);
 
+    // My keyboard setting: Add OS Detection
+    //                      For auto switch Ctrl → Command, Gui → Ctrl between
+    //                      Windows and MacOS
+
+    // Note: You must check both macOS and iOS at the same time!
+    //       Otherwise, it may not function properly on some versions of MacOS
+
+    os_variant_t current_os = detected_host_os();
+
+    if (current_os == OS_MACOS || current_os == OS_IOS) {
+        if (keycode == KC_LCTL || keycode == KC_RCTL) {
+            if (record->event.pressed) {
+                if (keycode == KC_LCTL) {
+                    unregister_code(KC_LCTL);
+                    register_code(KC_LGUI);
+                } else {
+                    unregister_code(KC_RCTL);
+                    register_code(KC_RGUI);
+                }
+            } else {
+                if (keycode == KC_LCTL) {
+                    unregister_code(KC_LGUI);
+                } else {
+                    unregister_code(KC_RGUI);
+                }
+            }
+            return false;
+        } else if (keycode == KC_LWIN || keycode == KC_RWIN) {
+            if (record->event.pressed) {
+                if (keycode == KC_LWIN) {
+                    unregister_code(KC_LWIN);
+                    register_code(KC_LCTL);
+                } else {
+                    unregister_code(KC_RWIN);
+                    register_code(KC_RCTL); 
+                }
+            } else {
+                if (keycode == KC_LWIN) {
+                    unregister_code(KC_LCTL);
+                } else {
+                    unregister_code(KC_RCTL);
+                }
+            }
+            return false;
+        }
+    }
+
+    // sekigon-gonnoc's default setting
     // To apply key overrides to keycodes combined shift modifier, separate to two actions
     if (keycode >= QK_MODS && keycode <= QK_MODS_MAX) {
         if (record->event.pressed) {

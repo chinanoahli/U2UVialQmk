@@ -24,5 +24,20 @@
 #define MATRIX_MSGES_ROW 31
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8
-#define WEAR_LEVELING_BACKING_SIZE (8192 * 2)
-#define WEAR_LEVELING_LOGICAL_SIZE 8192
+
+// sekigon-gonnoc's default setting
+// #define WEAR_LEVELING_BACKING_SIZE (8192 * 2)
+// #define WEAR_LEVELING_LOGICAL_SIZE 8192
+
+// My keyboard setting
+#define KB_MATRIX_LED 4
+  // Redefining the Flash Size for Non-Firmware Program Areas
+#define WEAR_LEVELING_BACKING_SIZE (128 * 1024)
+#define WEAR_LEVELING_LOGICAL_SIZE ((WEAR_LEVELING_BACKING_SIZE) / 2)
+  // Increase the maximum number of Macros
+#define DYNAMIC_KEYMAP_MACRO_COUNT 255
+  // Increase the maximum number of TapDances
+#define TAP_DANCE_ENTRIES 128
+#define VIAL_TAP_DANCE_ENTRIES 128
+  // Increase the maximum number of Combos
+#define VIAL_COMBO_ENTRIES 128

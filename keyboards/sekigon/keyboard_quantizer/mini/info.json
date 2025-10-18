@@ -15,7 +15,15 @@
         "pointing_device": true
     },
     "qmk": {
-        "tap_keycode_delay": 10
+        // sekigon-gonnoc's default setting
+        // "tap_keycode_delay": 10
+
+        // My keyboard setting
+          // Increase the delay between `register_code` and `unregister_code`
+          // to ensure Combo functions correctly in outdated software
+          // like Retas
+        "tap_keycode_delay": 150
+
     },
     "matrix_pins": {
         "cols": [

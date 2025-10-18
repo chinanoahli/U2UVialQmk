@@ -2,6 +2,8 @@ VIA_ENABLE = yes
 VIAL_ENABLE = yes
 VIAL_INSECURE = yes
 
+OS_DETECTION_ENABLE = yes
+
 SRC += quantizer_mouse.c raw_hid.c
 
 include keyboards/sekigon/keyboard_quantizer/mini/keymaps/vial/cli/rules.mk
